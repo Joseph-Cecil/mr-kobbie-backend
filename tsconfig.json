@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["./src/types", "./node_modules/@types"], // Ensure this includes `src/types`
+    "strict": true,
+    "target": "ES2021",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*"]
+}
