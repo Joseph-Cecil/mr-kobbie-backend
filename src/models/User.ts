@@ -15,7 +15,7 @@ const UserSchema: Schema = new Schema({
   lastName: { type: String, required: true },
   staffId: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["admin", "user"], default: "user" }
+  role: { type: String, enum: ["admin", "staff"], default: "staff" }
 },
   { timestamps: true });
 

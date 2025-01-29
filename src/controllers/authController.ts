@@ -40,9 +40,9 @@ export const registerUser = async (req: Request, res: Response) => {
     const user = new User({ firstName, lastName, staffId, password: hashedPassword, role });
     await user.save();
 
-    return res.status(201).json({ message: "User registered successfully." });
+    return res.status(201).json({ message: "Staff registered successfully." });
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error registering Staff:", error);
     return res.status(500).json({ message: "Error registering user.", error: (error as any).message });
   }
 };
