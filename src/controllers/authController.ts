@@ -116,31 +116,23 @@ export const changePassword = async (req: Request, res: Response) => {
 };
 
   // Reset Password (Admin Only)
-export const resetPassword = async (req: Request, res: Response) => {
-  const { staffId, newPassword } = req.body;
-
-  try {
-    // Check if the requester is an admin
-    if (!req.user || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied. Admins only." });
-    }
-
-    // Find the user by ID
-    const user = await User.findById(staffId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found." });
-    }
-
-    // Hash the new password and update the user record
-    user.password = await bcrypt.hash(newPassword, 10);
-    await user.save();
-
-    res.status(200).json({
-      message: `Password reset successfully for user ${user.staffId}.`,
-    });
-  } catch (error) {
-    console.error("Error resetting password:", error);
-    res.status(500).json({ message: "Error resetting password.", error });
-  }
-};
+  export const resetPassword = async (req: Request, res: Response) => {
+    const { staffId, newPassword } = req.body;
   
+    try {
+      const user = await User.findOne({ staffId }); // Find user by staffId (not _id)
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+  
+      user.password = newPassword; // Update password
+      await user.save();
+  
+      res.status(200).json({ message: "Password reset successfully!" });
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      res.status(500).json({ message: "Error resetting password.", error });
+    }
+  };
+    
