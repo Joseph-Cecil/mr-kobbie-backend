@@ -117,7 +117,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
   // Reset Password (Admin Only)
 export const resetPassword = async (req: Request, res: Response) => {
-  const { userId, newPassword } = req.body;
+  const { staffId, newPassword } = req.body;
 
   try {
     // Check if the requester is an admin
@@ -126,7 +126,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 
     // Find the user by ID
-    const user = await User.findById(userId);
+    const user = await User.findById(staffId);
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }

@@ -4,6 +4,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+interface AuthRequest extends Request {
+  user?: any;
+}
+
 export const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
@@ -34,5 +38,12 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     } catch (err) {
       res.status(401).json({ message: "Invalid token." });
     }
+  };
+
+  export const authorizeAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user || req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+    next();
   };
   
