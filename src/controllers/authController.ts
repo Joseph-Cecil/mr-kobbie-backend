@@ -118,21 +118,22 @@ export const changePassword = async (req: Request, res: Response) => {
   // Reset Password (Admin Only)
   export const resetPassword = async (req: Request, res: Response) => {
     const { staffId, newPassword } = req.body;
-  
+
     try {
-      const user = await User.findOne({ staffId }); // Find user by staffId (not _id)
-  
-      if (!user) {
-        return res.status(404).json({ message: "User not found." });
-      }
-  
-      user.password = newPassword; // Update password
-      await user.save();
-  
-      res.status(200).json({ message: "Password reset successfully!" });
+        const user = await User.findOne({ staffId }); // Find user by staffId
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        // Hash the new password before saving
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+        await user.save();
+
+        res.status(200).json({ message: "Password reset successfully!" });
     } catch (error) {
-      console.error("Error resetting password:", error);
-      res.status(500).json({ message: "Error resetting password.", error });
+        console.error("Error resetting password:", error);
+        res.status(500).json({ message: "Error resetting password.", error });
     }
-  };
-    
+};
