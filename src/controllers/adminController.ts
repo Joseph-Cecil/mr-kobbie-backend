@@ -4,7 +4,7 @@ import User from "../models/User";
 // Controller to fetch all users (Admin Only)
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.find().select("-password"); // Exclude passwords for security
+    const users = await User.find().select("-password");
     res.status(200).json(users);
     console.log(users)
   } catch (error) {
@@ -15,10 +15,8 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id; // Get ID from request parameters
-    console.log("Deleting user with ID:", userId); // Debugging log
+    const userId = req.params.id; 
 
-    // Check if the user exists
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found." });

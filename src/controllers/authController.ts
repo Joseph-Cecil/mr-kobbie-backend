@@ -87,7 +87,6 @@ export const changePassword = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized. Please log in." });
     }
 
-    // Find the user in the database
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found." });
@@ -110,7 +109,6 @@ export const changePassword = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Password updated successfully." });
   } catch (error) {
-    console.error("Error changing password:", error); // Log the error for debugging
     return res.status(500).json({ message: "An error occurred while changing the password.", error: (error as any).message });
   }
 };
@@ -120,13 +118,12 @@ export const changePassword = async (req: Request, res: Response) => {
     const { staffId, newPassword } = req.body;
 
     try {
-        const user = await User.findOne({ staffId }); // Find user by staffId
+        const user = await User.findOne({ staffId }); 
 
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
 
-        // Hash the new password before saving
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(newPassword, salt);
         await user.save();
