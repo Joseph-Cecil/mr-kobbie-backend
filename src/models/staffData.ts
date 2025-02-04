@@ -1,23 +1,26 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 interface IStaffData extends Document {
-  staffId: string;
+  staffId: number;
   name: string;
-  department: string;
-  role: string;
-  email?: string;
-  phone?: string;
-  [key: string]: any; // To allow dynamic fields from the Excel data
+  contributions: Record<string, number>; // Stores months dynamically
+  totalContribution?: number;
+  topUpDeposit?: number;
+  partialWithdrawal?: number;
+  totalContributionPaid?: number;
+  balanceForTheYear?: number;
 }
 
 const StaffDataSchema = new Schema<IStaffData>(
   {
-    staffId: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
-    department: { type: String, required: true },
-    role: { type: String, required: true },
-    email: { type: String },
-    phone: { type: String },
+    staffId: { type: Number, required: true, unique: true }, // STAFF NUMBER
+    name: { type: String, required: true }, // STAFF NAME
+    contributions: { type: Map, of: Number }, // Monthly contributions
+    totalContribution: { type: Number, default: 0 },
+    topUpDeposit: { type: Number, default: 0 },
+    partialWithdrawal: { type: Number, default: 0 },
+    totalContributionPaid: { type: Number, default: 0 },
+    balanceForTheYear: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

@@ -34,6 +34,8 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
       req.user = decoded; // Attach the user object to req.user
+      console.log("Decoded user:", decoded);
+console.log("User attached to req:", req.user);
       next();
     } catch (err) {
       res.status(401).json({ message: "Invalid token." });

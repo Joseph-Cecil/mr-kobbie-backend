@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/User"; // Assuming you have a user model
 import { sanitizeUserData } from "../utils/sanitizeUserData"; // Utility to sanitize the response
+import { StaffData } from "../models/staffData";
 
 /**
  * Fetch user profile data for the profile page
@@ -34,3 +35,28 @@ export const getUserProfile = async (req: Request, res: Response): Promise<void>
     res.status(500).json({ message: "Internal server error. Please try again later." });
   }
 };
+
+
+
+export const getStaffData = async (req: Request, res: Response) => {
+  try {
+    // Ensure user is authenticated
+    if (!req.user || !req.user.staffId) {
+      return res.status(401).json({ message: "Unauthorized access." });
+    }
+
+    // Find staff data based on the staffId
+    const staffData = await StaffData.findOne({ staffId: req.user.staffId });
+
+    if (!staffData) {
+      return res.status(404).json({ message: "Staff data not found." });
+    }
+
+    return res.status(200).json(staffData);
+  } catch (error) {
+    console.error("Error fetching staff data:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+
