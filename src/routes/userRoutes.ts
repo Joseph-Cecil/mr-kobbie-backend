@@ -6,6 +6,6 @@ const router = express.Router();
 
 // Route to get user profile
 router.get("/profile", authenticate, getUserProfile);
-router.get("/data", authenticate, getStaffData);
+router.get("/staff-data", authenticate, getStaffData);
 
 export default router;
