@@ -10,13 +10,11 @@ import { StaffData } from "../models/staffData";
  */
 export const getUserProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Ensure the user is authenticated (req.user is populated by middleware)
     if (!req.user || !req.user.id) {
       res.status(401).json({ message: "Unauthorized access." });
       return;
     }
 
-    // Fetch the user from the database
     const user = await User.findById(req.user.id).select("-password"); // Exclude password from the result
 
     // Check if the user exists
