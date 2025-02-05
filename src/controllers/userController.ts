@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/User"; // Assuming you have a user model
 import { sanitizeUserData } from "../utils/sanitizeUserData"; // Utility to sanitize the response
 import { StaffData } from "../models/staffData";
+import { Interest } from "../models/interest";
 
 /**
  * Fetch user profile data for the profile page
@@ -54,6 +55,23 @@ export const getStaffData = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching staff data:", error);
     return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+export const getInterest = async (req: Request, res: Response) => {
+  try {
+    // Retrieve the latest interest value (assuming it updates over time)
+    const latestInterest = await Interest.findOne().sort({ createdAt: -1 });
+
+    // If no interest is found, return a default message
+    if (!latestInterest) {
+      return res.status(404).json({ message: "No interest value found." });
+    }
+
+    return res.status(200).json({ interest: latestInterest.value, setBy: latestInterest.setBy });
+  } catch (error) {
+    console.error("Error fetching interest:", error);
+    return res.status(500).json({ message: "Internal server error. Please try again later." });
   }
 };
 
