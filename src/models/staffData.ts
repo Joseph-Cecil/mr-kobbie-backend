@@ -7,19 +7,17 @@ interface IStaffData extends Document {
   totalContribution?: number;
   topUpDeposit?: number;
   partialWithdrawal?: number;
-  totalContributionPaid?: number;
   balanceForTheYear?: number;
 }
 
 const StaffDataSchema = new Schema<IStaffData>(
   {
     staffId: { type: Number, required: true, unique: true }, // STAFF NUMBER
-    name: { type: String, required: true }, // STAFF NAME
-    contributions: { type: Map, of: Number }, // Monthly contributions
+    name: { type: String, required: true },
+    contributions: { type: Map, of: Number },
     totalContribution: { type: Number, default: 0 },
     topUpDeposit: { type: Number, default: 0 },
     partialWithdrawal: { type: Number, default: 0 },
-    totalContributionPaid: { type: Number, default: 0 },
     balanceForTheYear: { type: Number, default: 0 },
   },
   { timestamps: true }

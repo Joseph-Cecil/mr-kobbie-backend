@@ -32,7 +32,6 @@ export const uploadStaffData = async (req: Request, res: Response) => {
       const totalContribution = Number(data[" TOTAL CONTRIBUTION "]) || 0;
       const topUpDeposit = Number(data[" DEPOSIT - TOP UP "]) || 0;
       const partialWithdrawal = Number(data[" PARTIAL WITHDRAWAL "]) || 0;
-      const totalContributionPaid = Number(data[" TOTAL CONTRIBUTION PAID "]) || 0;
       const balanceForTheYear = Number(data[" BALANCE FOR THE YEAR "]) || 0;
 
       return StaffData.findOneAndUpdate(
@@ -43,7 +42,6 @@ export const uploadStaffData = async (req: Request, res: Response) => {
           totalContribution,
           topUpDeposit,
           partialWithdrawal,
-          totalContributionPaid,
           balanceForTheYear,
         },
         { upsert: true, new: true }
