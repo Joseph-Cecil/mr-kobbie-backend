@@ -3,13 +3,14 @@ import { StaffData } from "../models/staffData";
 
 export const uploadStaffData = async (req: Request, res: Response) => {
   try {
+    const workbookData: Record<string, unknown[]> = req.body; // Expecting an object with sheet names
     const staffDataArray = req.body; 
 
-    if (!Array.isArray(staffDataArray) || staffDataArray.length === 0) {
+    if (!workbookData || typeof workbookData !== "object") {
       return res.status(400).json({ message: "Invalid or empty data." });
     }
 
-    const operations = staffDataArray.map(async (data) => {
+    const operations = staffDataArray.map(async (data: { [x: string]: any; }) => {
       const staffId = data["STAFF NUMBER"];
       const name = data["STAFF NAME"];
 
